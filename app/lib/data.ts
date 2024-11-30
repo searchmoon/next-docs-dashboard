@@ -8,6 +8,9 @@ import {
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
+import { db } from "@vercel/postgres";
+
+const client = await db.connect();
 
 export async function fetchRevenue() {
   try {
@@ -15,11 +18,12 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     // console.log("Fetching revenue data...");
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
+    const data = await client.sql<Revenue>`SELECT * FROM revenue;`;
 
     // console.log('Data fetch completed after 3 seconds.');
+    console.log(data);
 
     return data.rows;
   } catch (error) {
