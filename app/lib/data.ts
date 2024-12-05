@@ -23,7 +23,6 @@ export async function fetchRevenue() {
     const data = await client.sql<Revenue>`SELECT * FROM revenue;`;
 
     console.log("Data fetch completed after 3 seconds.");
-    console.log(data);
 
     return data.rows;
   } catch (error) {
@@ -97,7 +96,7 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable>`
+    const invoices = await client.sql<InvoicesTable>`
       SELECT
         invoices.id,
         invoices.amount,
@@ -127,7 +126,7 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const count = await sql`SELECT COUNT(*)
+    const count = await client.sql`SELECT COUNT(*)
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
     WHERE
@@ -148,7 +147,7 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql<InvoiceForm>`
+    const data = await client.sql<InvoiceForm>`
       SELECT
         invoices.id,
         invoices.customer_id,
@@ -173,7 +172,7 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const data = await sql<CustomerField>`
+    const data = await client.sql<CustomerField>`
       SELECT
         id,
         name
@@ -191,7 +190,7 @@ export async function fetchCustomers() {
 
 export async function fetchFilteredCustomers(query: string) {
   try {
-    const data = await sql<CustomersTableType>`
+    const data = await client.sql<CustomersTableType>`
 		SELECT
 		  customers.id,
 		  customers.name,
