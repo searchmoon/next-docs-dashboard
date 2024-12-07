@@ -13,6 +13,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     console.log(`Searching... ${term}`);
 
     const params = new URLSearchParams(searchParams);
+    console.log(params.get(`query222`));
     params.set("page", "1");
     // 입력이 있다면,입력값을 셋팅해주고, 없다면, 삭제해준다.
     if (term) {
