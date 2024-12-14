@@ -4,6 +4,8 @@ import { z } from "zod"; // 유효성 검사 라이브러리
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@vercel/postgres";
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 // zod 를 사용하여 유효성 검사를 하려면 입력 폼에 대한 스키마를 작성해야한다.
 const FormSchema = z.object({
@@ -121,3 +123,23 @@ export async function deleteInvoice(id: string) {
     return { message: "Database Error: Failed to Delete Invoice." };
   }
 }
+
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+  ) {
+    try {
+      await signIn('credentials', formData);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case 'CredentialsSignin':
+            return 'Invalid credentials.';
+          default:
+            return 'Something went wrong.';
+        }
+      }
+      throw error;
+    }
+  }
