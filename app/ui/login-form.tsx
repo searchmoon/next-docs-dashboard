@@ -29,7 +29,7 @@ export default function LoginForm() {
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="email"
             >
-              Email
+              Email (user@nextmail.com 이걸로 로그인하기)
             </label>
             <div className="relative">
               <input
